@@ -10,6 +10,10 @@ jobs:
         name: wat
         runs-on: ubuntu-20.04
         steps:
+            - name: Checkout the repository
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
             - name: Set LAST_CHANGELOG_ENTRY
               id: set-last-changelog-entry
               run: |
