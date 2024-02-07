@@ -20,8 +20,8 @@ jobs:
                 # read from the first until the second header in the changelog file
                 # this assumes the formatting of the file
                 # and that this workflow is always running for the most recent entry in the file 
-                LAST_CHANGELOG_ENTRY=$(awk -v defText='see CHANGELOG.md' '/^## /{if (flag) exit; flag=1} flag && /^##$/{exit} flag; END{if (!flag) print defText}' CHANGELOG.md)
-                echo "LAST_CHANGELOG_ENTRY=$LAST_CHANGELOG_ENTRY" >> "$GITHUB_OUTPUT"
+                ENCODED_CONTENT=$(awk -v defText="see CHANGELOG.md" '/^## /{if (flag) exit; flag=1} flag && /^##$/{exit} flag; END{if (!flag) print defText}' CHANGELOG.md | base64)
+                echo "LAST_CHANGELOG_ENTRY=$ENCODED_CONTENT" >> "$GITHUB_OUTPUT"
                 echo "we generated ${LAST_CHANGELOG_ENTRY}"
 
             - name: checkit
@@ -35,4 +35,4 @@ jobs:
               with:
                   tag_name: v101
                   release_name: first
-                  body: ${{ steps.set-last-changelog-entry.outputs.LAST_CHANGELOG_ENTRY }}
+                  body: ${{ $(echo "${{ steps.set-last-changelog-entry.outputs.LAST_CHANGELOG_ENTRY }}" | base64 --decode) }}
