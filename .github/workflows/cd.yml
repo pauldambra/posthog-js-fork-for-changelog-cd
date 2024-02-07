@@ -35,4 +35,4 @@ jobs:
               with:
                   tag_name: v101
                   release_name: first
-                  body: ${{ $(echo "${{ steps.set-last-changelog-entry.outputs.LAST_CHANGELOG_ENTRY }}" | base64 --decode) }}
+                  body: $("${{ steps.set-last-changelog-entry.outputs.LAST_CHANGELOG_ENTRY }}" | base64 --decode)
