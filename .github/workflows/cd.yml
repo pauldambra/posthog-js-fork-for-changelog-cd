@@ -18,7 +18,7 @@ jobs:
                   fetch-depth: 0
             - name: Set LAST_CHANGELOG_ENTRY
               env:
-                GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                GH_TOKEN: ${{ secrets.the_pat }}
               id: set-last-changelog-entry
               run: |
                 # read from the first until the second header in the changelog file
