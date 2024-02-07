@@ -18,7 +18,7 @@ jobs:
                   fetch-depth: 0
             - name: Set LAST_CHANGELOG_ENTRY
               env:
-                GH_TOKEN: ${{ secrets.the_pat }}
+                GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               id: set-last-changelog-entry
               run: |
                 # read from the first until the second header in the changelog file
@@ -30,9 +30,9 @@ jobs:
                   -H "Accept: application/vnd.github+json" \
                   -H "X-GitHub-Api-Version: 2022-11-28" \
                   /repos/pauldambra/posthog-js-fork-for-changelog-cd/releases \
-                  -f tag_name='v1.0.0555' \
+                  -f tag_name='v1.0.055as5' \
                 -f target_commitish='main' \
-                -f name='v1.0.04444' \
+                -f name='v1.0.044sdasd44' \
                 -f body="$LAST_CHANGELOG_ENTRY" \
                 -F draft=false \
                 -F prerelease=false \
