@@ -33,6 +33,6 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
-                  tag_name: v101
-                  release_name: first
+                  tag_name: v102
+                  release_name: second
                   body: $("${{ steps.set-last-changelog-entry.outputs.LAST_CHANGELOG_ENTRY }}" | base64 --decode)
