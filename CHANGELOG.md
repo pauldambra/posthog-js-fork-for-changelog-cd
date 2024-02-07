@@ -2,6 +2,7 @@
 
  - a thing
  - and another
+ - and a third
 
 ## 1.105.3 - 2024-02-07
 
