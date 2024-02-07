@@ -20,19 +20,11 @@ jobs:
                 # read from the first until the second header in the changelog file
                 # this assumes the formatting of the file
                 # and that this workflow is always running for the most recent entry in the file 
-                ENCODED_CONTENT=$(awk -v defText="see CHANGELOG.md" '/^## /{if (flag) exit; flag=1} flag && /^##$/{exit} flag; END{if (!flag) print defText}' CHANGELOG.md | base64)
-                echo "LAST_CHANGELOG_ENTRY=$ENCODED_CONTENT" >> "$GITHUB_OUTPUT"
-                echo "we generated ${LAST_CHANGELOG_ENTRY}"
-
-            - name: checkit
-              run: |
-                echo ${{ steps.set-last-changelog-entry.outputs.LAST_CHANGELOG_ENTRY }}
-                  
-            - name: Create GitHub release
-              uses: actions/create-release@v1
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              with:
-                  tag_name: v103
-                  release_name: third
-                  body: $(echo "${{ steps.set-last-changelog-entry.outputs.LAST_CHANGELOG_ENTRY }}" | base64 --decode)
+                LAST_CHANGELOG_ENTRY=$(awk -v defText="see CHANGELOG.md" '/^## /{if (flag) exit; flag=1} flag && /^##$/{exit} flag; END{if (!flag) print defText}' CHANGELOG.md | base64)
+                curl -L \
+                -X POST \
+                -H "Accept: application/vnd.github+json" \
+                -H "Authorization: Bearer secrets.GITHUB_TOKEN" \
+                -H "X-GitHub-Api-Version: 2022-11-28" \
+                https://api.github.com/repos/posthog/posthog-js/releases \
+                -d '{"tag_name":"v1.0.0444","target_commitish":"main","name":"v1.0.0444","body":$LAST_CHANGELOG_ENTRY,"draft":false,"prerelease":false,"generate_release_notes":false}'
